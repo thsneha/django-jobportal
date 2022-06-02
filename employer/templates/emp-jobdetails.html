@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+{%block body_block%}
+<div class="row">
+    <div class="col-3"></div>
+     <div class="col-6">
+        <div class="card text">
+           <div class="card-header">{{job.job_title}}</div>
+               <div class="card-body">
+                  <h5 class="card-title">
+                    <span>company:</span>   {{job.company}}</h5>
+                        <p class="card-text">Location:{{job.location}}</p>
+                        <p class="card-text">Salary:{{job.salary}}</p>
+                        <p class="card-text">Experience:{{job.experience}}</p>
+
+
+
+              </div>
+        </div>
+     </div>
+    <div class="col"></div>
+</div>
+
+
+
+
+{%endblock%}
