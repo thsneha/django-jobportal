@@ -11,6 +11,11 @@ urlpatterns=[
   path("users/accounts/signin",views.SignInview.as_view(),name="signin"),
   path("users/accounts/signout",views.signout_view,name="signout"),
   path("users/accounts/passwordchange",views.ChangePasswordView.as_view(),name="change-password"),
-  path("users/accounts/passwordreset",views.PasswordResetView.as_view(),name="reset-password")
-  
+  path("users/accounts/passwordreset",views.PasswordResetView.as_view(),name="reset-password"),
+  path("profile/add",views.CompanyProfileView.as_view(),name="emp-addprofile"),
+  path("profile/detail",views.EmpViewProfileView.as_view(),name="emp-viewprofile"),# here the id is not necessary because models related name=employer has given.so
+  path("profile/edit/<int:id>",views.EmpEditProfileView.as_view(),name="emp-editprofile")
+
 ]
+#safe operation-get,list
+#unsafe-put,patch,delete,create

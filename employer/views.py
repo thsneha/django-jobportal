@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect
 from django.views.generic import View,ListView,CreateView,DetailView,UpdateView,DeleteView,FormView,TemplateView
 from django.urls import reverse_lazy
 from employer.forms import JobForm
-from employer.models import Jobs
-from employer.forms import SignUpForm,LoginForm
+from employer.models import Jobs,CompanyProfile
+from employer.forms import SignUpForm,LoginForm,CompanyProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
@@ -153,6 +153,43 @@ class PasswordResetView(TemplateView):
             u.set_password(pwd1)
             u.save()
             return redirect("signin")
+
+class CompanyProfileView(CreateView):
+    model = CompanyProfile
+    form_class = CompanyProfileForm
+    template_name='emp-addprofile.html'
+    success_url=reverse_lazy("emp-home")
+
+    # def post(self, request, *args, **kwargs):
+    #    form=CompanyProfileForm(request.POST,files=request.FILES)#request.Post only added the text format but incase image we have to add files
+    #    if form.is_valid():                    #in the form user is excluded so we have to pass who is the user..
+    #          form.instance.user = request.user#ie we have to pass the user as user who is logged in from the form.so the user from logged in added to user field
+    #          form.save()
+    #          return redirect("emp.home")
+    #    else:
+    #          return render(request,self.template_name,{"form":form})
+    def form_valid(self,form):
+        form.instance.user=self.request.user
+        return super().form_valid(form)
+
+class EmpViewProfileView(TemplateView):
+        template_name = "emp-viewprofile.html"
+
+class EmpEditProfileView(UpdateView):
+    model=CompanyProfile
+    form_class = CompanyProfileForm
+    template_name = "emp-editprofile.html"
+    success_url = reverse_lazy("emp-viewprofile")
+    pk_url_kwarg = "id"
+
+
+
+
+
+
+
+
+
 
 
 

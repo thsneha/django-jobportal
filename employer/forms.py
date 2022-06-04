@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from employer.models import Jobs,CompanyProfile
+
 
 # class JobForm(forms.Form):
     # job_title=forms.CharField()
@@ -11,7 +13,7 @@ from django.contrib.auth.forms import UserCreationForm
 
     #MODELFORM is inherited and USING FOR CREATING FORM CORRESPONDING DATABASE.
 
-from employer.models import Jobs
+
 class JobForm(forms.ModelForm):
     class Meta:
         model=Jobs
@@ -26,6 +28,14 @@ class SignUpForm(UserCreationForm):
 class LoginForm(forms.Form):
     username=forms.CharField()
     password=forms.CharField(widget=forms.PasswordInput())
+
+
+
+class CompanyProfileForm(forms.ModelForm):
+    class Meta:
+        model=CompanyProfile
+        exclude=("user",)
+    
 
 
 
