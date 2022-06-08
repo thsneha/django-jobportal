@@ -26,6 +26,12 @@ class AddJobView(CreateView):#forclass and successurl in post case..
     form_class=JobForm
     template_name = "emp_addjob.html"
     success_url=reverse_lazy("emp-alljobs")#successurl is used for post case after creating the jobs then click add button it go to list all jobs.
+    #override the form_valid method
+    #before saving the form we have to pass the company in model
+    def form_valid(self, form):
+        form.instance.company=self.request.user#assign the company is the user who is login.
+        return super().form_valid(form)
+
     # def get(self,request):
     #     form=JobForm()
     #     return render(request,"emp_addjob.html",{"form":form})
@@ -56,6 +62,8 @@ class AddJobView(CreateView):#forclass and successurl in post case..
 #update-form
 #list-
 #delete
+
+
 class ListJobView(ListView):
     # def get(self,request):
     #   qs= Jobs.objects.all()
@@ -63,6 +71,11 @@ class ListJobView(ListView):
     model=Jobs
     context_object_name="jobs"
     template_name="emp-listjob.html"
+    def get_queryset(self):#overriding the get queryset because we have to change only orm query set otherwise we have to pass below all commands
+        return Jobs.objects.filter(company=self.request.user)
+    # def get(self,request):
+    #   qs= Jobs.objects.filter(company=request.user)
+    #   return render(request,self.template_name,{"jobs":qs})
 
 class JobDetailsView(DetailView):
     # def get(self,request,id):  #id passing at the time of specific operation in an object

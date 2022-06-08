@@ -5,11 +5,13 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Jobs(models.Model):#mapping to table in db
     job_title=models.CharField(max_length=150)
-    company=models.CharField(max_length=150)
+    company=models.ForeignKey(User,on_delete=models.CASCADE,related_name="company")#company is adding the job so it is foreign key-one to many
     location=models.CharField(max_length=150)
     salary=models.PositiveIntegerField(null=True)#if the field is not added it will be added to db
     experience=models.PositiveIntegerField(default=0)#if the person has no experence then it will default as zero but if we added the experience it will change..
-
+    created_date=models.DateField(auto_now_add=True)#obtain automatically current date and time
+    last_date=models.DateField(null=True)
+    active_status=models.BooleanField(default=True)#
 #python manage.py makemigrations
 #python manage.py migrate
 #to print the objects name and details in shell we are overriding the string method(tostring):

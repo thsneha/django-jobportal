@@ -7,7 +7,7 @@
            <div class="card-header">{{job.job_title}}</div>
                <div class="card-body">
                   <h5 class="card-title">
-                    <span>company:</span>   {{job.company}}</h5>
+                    <span>company:</span>   {{job.company.employer.company_name}}</h5>
                         <p class="card-text">Location:{{job.location}}</p>
                         <p class="card-text">Salary:{{job.salary}}</p>
                         <p class="card-text">Experience:{{job.experience}}</p>
