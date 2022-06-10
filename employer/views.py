@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from employer.forms import JobForm
 from employer.models import Jobs,CompanyProfile
 from employer.forms import SignUpForm,LoginForm,CompanyProfileForm
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from employer.models import User
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 #create
@@ -120,7 +121,7 @@ class SignUpView(CreateView):
     model=User
     form_class=SignUpForm
     template_name = "usersignup.html"
-    success_url=reverse_lazy("emp-alljobs")
+    success_url=reverse_lazy("signin")
 
 class SignInview(FormView):
     form_class=LoginForm
@@ -134,7 +135,12 @@ class SignInview(FormView):
             user=authenticate(request,username=uname,password=pwd)#auth app contains authenticate function..
             if user:
                 login(request,user)#used for avoid reauthenticate in case of add job or listjob.
-                return redirect("emp-alljobs")
+                if request.user.role=="employer":
+                    return redirect("emp-alljobs")
+                elif request.user.role=="candidate":
+                    return redirect("cand-home")
+
+
             else:
                 return render(request,"login.html",{"form":form})
 

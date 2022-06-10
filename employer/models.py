@@ -1,8 +1,21 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 
 # Create your models here.
+#previous user model contains firstname,lastname,username,email,pwd.
+# so we have to customize the user.
+#customizing authentication in django for adding the role in user.eg.employer or candidate
+class User(AbstractUser):
+    options=(
+             ("employer","employer"),
+             ("candidate","candidate")
+             )
+    role=models.CharField(max_length=120,choices=options,default="candidate")
+    phone=models.CharField(max_length=12,null=True)
+
+
+
 class Jobs(models.Model):#mapping to table in db
     job_title=models.CharField(max_length=150)
     company=models.ForeignKey(User,on_delete=models.CASCADE,related_name="company")#company is adding the job so it is foreign key-one to many
@@ -24,8 +37,8 @@ class CompanyProfile(models.Model):
     logo=models.ImageField(upload_to="companyprofile",null=True)
     location=models.CharField(max_length=120)
     services=models.CharField(max_length=120)
-    description=models.CharField(max_length=200)
 
+    description=models.CharField(max_length=200)
 
 #create the objects in model
 # orm query
