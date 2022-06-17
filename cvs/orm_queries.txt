@@ -1,0 +1,64 @@
+class Jobs(models.Model):#mapping to table in db
+    job_title=models.CharField(max_length=150)
+    company=models.CharField(max_length=150)
+    location=models.CharField(max_length=150)
+    salary=models.PositiveIntegerField(null=True)#if the field is not added it will be added to db
+    experience=models.PositiveIntegerField(default=0)#if the person has no experence then it will default as zero but if we added the experience it will change..
+    
+    def __str__(self):
+        return self.job_title
+python manage.py makemigrations
+python manage.py migrate
+python manage.py shell
+1.ormquery for creating a new job object:-
+
+from employer.models import Jobs
+ 1.creating the objects
+Jobs.objects.create(job_title="UI",company="tcs",location="tvm",salary=25000,experience=1)
+
+2.fetching all records of  objects
+  qs=Jobs.objects.all()
+  qs
+3.filtering experience=1
+   qs=Jobs.objects.filter(experience=1)
+4.filtering experience>1(field lookups from documentation)
+ qs= Jobs.objects.filter(experience__gt=1)
+ qs
+5.# to fetch a specific object
+   #qs=Jobs.objects.get(id=5)
+  #print(qs)
+6.#update
+ #1.qs.Jobs.objects.get(id=3)
+ #qs
+ #qs.experience=2
+ #qs.save()
+delete
+# qs=Jobs.objects.get(id=1)
+>>> qs.delete()
+
+.row +tab key for <div class=row>
+.col*4+tab key for <div class="column">
+                   <div class="column">
+                   <div class="column">
+                   <div class="column">
+
+
+
+
+1.model
+2.template
+3.forms
+4 views import form and write the class AddJobview inherit from View
+5.write the template emp_addjob.html
+
+1deleting models 
+
+ from employer.models import Jobs
+>>> Jobs.objects.all().delete()
+Then updating...
+
+
+
+
+
+
