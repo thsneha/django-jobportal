@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
-from django.views.generic import TemplateView,CreateView,FormView
-from candidates.models import CandidateProfile
+from django.views.generic import TemplateView,CreateView,FormView,ListView,DetailView
+from candidates.models import CandidateProfile,Applications
 from candidates.forms import CandidateProfileForm,CandidateProfileUpdateForm
 from django.urls import reverse_lazy
-from employer.models import User
+from employer.models import User,Jobs
+from django.contrib import messages
 # Create your views here.
 class CandidateHomeView(TemplateView):
     template_name = "candidate/can-home.html"
@@ -16,6 +17,7 @@ class CandidateProfileView(CreateView):
 
     def form_valid(self,form):
         form.instance.user=self.request.user
+        messages.success(self.request,"your profiles has been added")
         return super().form_valid(form)
 
 class CandidateProfileDetailView(TemplateView):
@@ -49,7 +51,31 @@ class CandidateProfileEditView(FormView):
             user.last_name=lastname
             user.phone=phone
             user.save()
+            messages.success(request,"your profile has been updated")
             return redirect("cand-home")
         else:
+            messages.error(request,"error occur while updating profile")
             return render(request,self.template_name,{"form":form})
+class CandidateJobListView(ListView):
+    model=Jobs
+    context_object_name = "jobs"
+    template_name = "candidate/joblist.html"
+
+    def get_queryset(self):#changing the query set
+        return self.model.objects.filter(active_status=True).order_by("-created_date")#currently active jobsobtaining the jobs by descending order of date,so latest will come first.
+
+class CandidateJobDetailView(DetailView):
+    model=Jobs
+    context_object_name = "job"
+    template_name = "candidate/jobdetail.html"
+    pk_url_kwarg ="id"
+
+def apply_now(request,*args,**kwargs):
+    user=request.user
+    job_id=kwargs.get("id")
+    job=Jobs.objects.get(id=job_id)
+    Applications.objects.create(applicant=user,job=job)
+    messages.success(request,"your application has been posted successfully")
+
+    return redirect("cand-home")
 

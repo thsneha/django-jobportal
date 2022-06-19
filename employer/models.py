@@ -25,6 +25,7 @@ class Jobs(models.Model):#mapping to table in db
     created_date=models.DateField(auto_now_add=True)#obtain automatically current date and time
     last_date=models.DateField(null=True)
     active_status=models.BooleanField(default=True)#
+
 #python manage.py makemigrations
 #python manage.py migrate
 #to print the objects name and details in shell we are overriding the string method(tostring):
