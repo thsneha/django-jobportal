@@ -9,18 +9,6 @@ class CandidateProfile(models.Model):
     skills=models.CharField(max_length=120)
     experience=models.PositiveIntegerField(default=0)
 
-class Applications(models.Model):
-    applicant=models.ForeignKey(User,on_delete=models.CASCADE,related_name="applicant")#no of applicants can apply an applications ie  many to one-foreignkey
-    job=models.ForeignKey(Jobs,on_delete=models.CASCADE)#many job can apply  a candidate
-    options=(
-        ("applied","applied"),#(values in backend, display)
-        ("accepted","accepted"),
-        ("rejected","rejected"),
-        ("pending","pending"),
-        ("cancelled","cancelled")
-    )
-    status=models.CharField(max_length=120,choices=options,default="applied")
-    date=models.DateTimeField(auto_now_add=True)
 
 
 

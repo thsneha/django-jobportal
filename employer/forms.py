@@ -32,8 +32,8 @@ class SignUpForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    username=forms.CharField()
-    password=forms.CharField(widget=forms.PasswordInput())
+    username=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control rounded-pill"}))
+    password=forms.CharField(widget=forms.PasswordInput(attrs={"class":"form-control rounded-pill"}))
 
 
 

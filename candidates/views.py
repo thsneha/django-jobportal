@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.views.generic import TemplateView,CreateView,FormView,ListView,DetailView
-from candidates.models import CandidateProfile,Applications
+from candidates.models import CandidateProfile
 from candidates.forms import CandidateProfileForm,CandidateProfileUpdateForm
 from django.urls import reverse_lazy
-from employer.models import User,Jobs
+from employer.models import User,Jobs,Applications
 from django.contrib import messages
 # Create your views here.
 class CandidateHomeView(TemplateView):
@@ -70,6 +70,15 @@ class CandidateJobDetailView(DetailView):
     template_name = "candidate/jobdetail.html"
     pk_url_kwarg ="id"
 
+#check whether the login candidate has applied the job or not.so we need particular jobdetail + applied job or not.
+#job=self.object means particular job object
+#contextdata overide- if we need the alreadydata+additional data
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        is_applied=Applications.objects.filter(applicant=self.request.user,job=self.object)
+        context["is_applied"]=is_applied
+        return context
+
 def apply_now(request,*args,**kwargs):
     user=request.user
     job_id=kwargs.get("id")
@@ -78,4 +87,5 @@ def apply_now(request,*args,**kwargs):
     messages.success(request,"your application has been posted successfully")
 
     return redirect("cand-home")
+
 

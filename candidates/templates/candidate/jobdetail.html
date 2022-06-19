@@ -12,11 +12,18 @@
                         <p class="card-text">Location:{{job.location}}</p>
                         <p class="card-text">Salary:{{job.salary}}</p>
                         <p class="card-text">Experience:{{job.experience}}</p>
-                   <div class="row">
+  <div class="row">
         <div class="col-4"></div>
-        <div class="col-4">
-            <a href="{%url 'applynow' job.id%}" class="btn btn-outline-info">Applynow</a>
-        </div>
+        {%if is_applied%}
+                <div class="col-4">
+                 <a href="" class="btn btn-outline-success mb-2">Applied</a>
+                </div>
+         {%else%}
+                <div class="col-4">
+                <a href="{%url 'applynow' job.id%}" class="btn btn-outline-info mb-2">Applynow</a>
+                </div>
+
+         {%endif%}
         <div class="col-4"></div>
     </div>
 
