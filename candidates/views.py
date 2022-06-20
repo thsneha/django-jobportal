@@ -88,4 +88,21 @@ def apply_now(request,*args,**kwargs):
 
     return redirect("cand-home")
 
+class ApplicationListView(ListView):
+    model= Applications
+    template_name="candidate/cand-applications.html"
+    context_object_name = "applications"
+
+    def get_queryset(self):
+        return Applications.objects.filter(applicant=self.request.user).exclude(status="cancelled")
+
+def cancel_applicaton(request,*args,**kwargs):
+    app_id=kwargs.get("id")
+    application=Applications.objects.get(id=app_id)
+    application.status="cancelled"
+    application.save()
+    messages.success(request,"your application cancelled")
+    return redirect("cand-home")
+
+
 

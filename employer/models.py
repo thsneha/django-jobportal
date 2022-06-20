@@ -55,6 +55,10 @@ class Applications(models.Model):
         status = models.CharField(max_length=120, choices=options, default="applied")
         date = models.DateTimeField(auto_now_add=True)
 
+        class Meta:
+            unique_together=("applicant","job")#befor thie its stop only apply job via client if we apply the job through the url it is posted again and again
+                                               #so the applicant and job unique together
+
 #create the objects in model
 # orm query
 #Modelname.objects.create(field=value,field=value....)
