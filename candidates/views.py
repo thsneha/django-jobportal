@@ -94,7 +94,7 @@ class ApplicationListView(ListView):
     context_object_name = "applications"
 
     def get_queryset(self):
-        return Applications.objects.filter(applicant=self.request.user).exclude(status="cancelled")
+        return Applications.objects.filter(applicant=self.request.user).exclude(status="cancelled")#to remove the cancelled application status
 
 def cancel_applicaton(request,*args,**kwargs):
     app_id=kwargs.get("id")

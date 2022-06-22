@@ -12,3 +12,4 @@ class CandidateProfile(models.Model):
 
 
 
+

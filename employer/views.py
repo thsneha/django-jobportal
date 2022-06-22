@@ -5,7 +5,7 @@ from employer.forms import JobForm
 from employer.models import Jobs,CompanyProfile
 from employer.forms import SignUpForm,LoginForm,CompanyProfileForm
 # from django.contrib.auth.models import User
-from employer.models import User
+from employer.models import User,Applications
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 #create
@@ -200,6 +200,22 @@ class EmpEditProfileView(UpdateView):
     template_name = "emp-editprofile.html"
     success_url = reverse_lazy("emp-viewprofile")
     pk_url_kwarg = "id"
+
+class EmployeeListApplications(ListView):
+    model=Applications
+    context_object_name = "applications"
+    template_name = "empl-applist.html"
+    #default query set is Applications.objects.all..so we filter and change the query so here queryset override.
+    def get_queryset(self):
+        return Applications.objects.filter(job=self.kwargs.get("id")).exclude(status="cancelled")#exclude the status=cancelled.
+
+class EmployeeApplicationDetailView(DetailView):
+    model=Applications
+    context_object_name = "application"
+    template_name = "emp-appdetail.html"
+    pk_url_kwarg = "id"
+
+
 
 
 
