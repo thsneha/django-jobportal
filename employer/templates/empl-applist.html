@@ -8,10 +8,10 @@
         <div class="col-8">
             <table class="table">
                 <tr>
-                <th>Applications</th>
-                <th>qualifications</th>
-                <th>Applied-date</th>
-                <th>jobtitle</th>
+                    <th>Applications</th>
+                    <th>qualifications</th>
+                    <th>Applied-date</th>
+                    <th>jobtitle</th>
                 </tr>
                 {%for application in applications%}
                 <tr>
@@ -19,7 +19,8 @@
                     <td>{{application.applicant.candidate.qualification}}</td>
                     <td>{{application.date}}</td>
                     <td>{{application.job.job_title}}</td>
-                    <td><a href="{%url 'emplyee-detailapp' application.id%}" class="btn btn-info"> view application</a></td>
+                    <td><a href="{%url 'emplyee-detailapp' application.id%}" class="btn btn-info"> view application</a>
+                    </td>
                 </tr>
 
 

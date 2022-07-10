@@ -5,10 +5,15 @@ from candidates.forms import CandidateProfileForm,CandidateProfileUpdateForm
 from django.urls import reverse_lazy
 from employer.models import User,Jobs,Applications
 from django.contrib import messages
+from django.utils.decorators import method_decorator
+from employer.decorators import signin_required
 # Create your views here.
+@method_decorator(signin_required,name="dispatch")
 class CandidateHomeView(TemplateView):
     template_name = "candidate/can-home.html"
 
+
+@method_decorator(signin_required,name="dispatch")
 class CandidateProfileView(CreateView):
     model=CandidateProfile
     form_class=CandidateProfileForm
@@ -20,10 +25,12 @@ class CandidateProfileView(CreateView):
         messages.success(self.request,"your profiles has been added")
         return super().form_valid(form)
 
+@method_decorator(signin_required,name="dispatch")
 class CandidateProfileDetailView(TemplateView):
      template_name="candidate/can-profiledetail.html"
 
 
+@method_decorator(signin_required,name="dispatch")
 class CandidateProfileEditView(FormView):
     template_name = "candidate/can-editprof.html"
     form_class = CandidateProfileUpdateForm
@@ -56,6 +63,8 @@ class CandidateProfileEditView(FormView):
         else:
             messages.error(request,"error occur while updating profile")
             return render(request,self.template_name,{"form":form})
+
+@method_decorator(signin_required,name="dispatch")
 class CandidateJobListView(ListView):
     model=Jobs
     context_object_name = "jobs"
@@ -64,6 +73,9 @@ class CandidateJobListView(ListView):
     def get_queryset(self):#changing the query set
         return self.model.objects.filter(active_status=True).order_by("-created_date")#currently active jobsobtaining the jobs by descending order of date,so latest will come first.
 
+
+
+@method_decorator(signin_required,name="dispatch")
 class CandidateJobDetailView(DetailView):
     model=Jobs
     context_object_name = "job"
@@ -78,7 +90,7 @@ class CandidateJobDetailView(DetailView):
         is_applied=Applications.objects.filter(applicant=self.request.user,job=self.object)
         context["is_applied"]=is_applied
         return context
-
+@signin_required
 def apply_now(request,*args,**kwargs):
     user=request.user
     job_id=kwargs.get("id")
@@ -88,6 +100,8 @@ def apply_now(request,*args,**kwargs):
 
     return redirect("cand-home")
 
+
+@method_decorator(signin_required,name="dispatch")
 class ApplicationListView(ListView):
     model= Applications
     template_name="candidate/cand-applications.html"
@@ -96,6 +110,7 @@ class ApplicationListView(ListView):
     def get_queryset(self):
         return Applications.objects.filter(applicant=self.request.user).exclude(status="cancelled")#to remove the cancelled application status
 
+@signin_required
 def cancel_applicaton(request,*args,**kwargs):
     app_id=kwargs.get("id")
     application=Applications.objects.get(id=app_id)
