@@ -1,0 +1,18 @@
+1.'django.contrib.messages' is in INSTALLED_APPS.
+
+2.MIDDLEWARE contains 'django.contrib.sessions.middleware.SessionMiddleware' and 'django.contrib.messages.middleware.MessageMiddleware'.
+
+3 import messages module in views
+4 message- messages.success(request,"your application has been posted successfully")
+
+Displaying messages¶
+get_messages(request)[source]¶
+In your template, use something like:
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}

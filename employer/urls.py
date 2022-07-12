@@ -17,7 +17,8 @@ urlpatterns=[
   path("profile/edit/<int:id>",views.EmpEditProfileView.as_view(),name="emp-editprofile"),
   path("applications/all/<int:id>",views.EmployeeListApplications.as_view(),name="emp-appjoblist"),
   path("applications/details/<int:id>",views.EmployeeApplicationDetailView.as_view(),name="emplyee-detailapp"),
-  path("job/applications/status/change/<int:id>",views.reject_application,name="reject-application")
+  path("job/applications/status/change/<int:id>",views.reject_application,name="reject-application"),
+  path("application/accept/<int:app_id>",views.accept_application,name="accept-application")
 
 
 ]

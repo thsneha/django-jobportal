@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from employer.decorators import signin_required
+from django.core.mail import send_mail
+
 # Create your views here.
 #create
 #form_class
@@ -220,7 +222,7 @@ class EmployeeListApplications(ListView):
     template_name = "empl-applist.html"
     #default query set is Applications.objects.all..so we filter and change the query so here queryset override.
     def get_queryset(self):
-        return Applications.objects.filter(job=self.kwargs.get("id")).exclude(status="cancelled")#exclude the status=cancelled.
+        return Applications.objects.filter(job=self.kwargs.get("id"),status="applied")#exclude the status=cancelled.
 
 @method_decorator(signin_required,name='dispatch')
 class EmployeeApplicationDetailView(DetailView):
@@ -228,6 +230,28 @@ class EmployeeApplicationDetailView(DetailView):
     context_object_name = "application"
     template_name = "emp-appdetail.html"
     pk_url_kwarg = "id"
+
+
+@signin_required
+def accept_application(request,*args,**kwargs):
+    if request.method=="POST":
+      app_id=kwargs.get("app_id")
+      application=Applications.objects.get(id=app_id)#obtaining this id from model
+      application.status="accepted"
+      application.save()
+      subject=request.POST.get("sub")
+      message=request.POST.get("msg")
+      email=request.POST.get("email")
+      send_mail(
+          subject,
+          message,
+          'snehasthomas2016@gmail.com',
+          [email],
+          fail_silently=False,
+      )
+      messages.success(request, "your application accepted")
+      return redirect("emp-home")
+
 
 @signin_required
 def reject_application(request,*args,**kwargs):
